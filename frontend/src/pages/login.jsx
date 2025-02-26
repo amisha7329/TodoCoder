@@ -3,7 +3,7 @@ import { Google } from "@mui/icons-material";
 
 const Login = () => {
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:5000/api/auth/google";
+    window.location.href = "http://localhost:8080/api/auth/google";
   };
 
   return (

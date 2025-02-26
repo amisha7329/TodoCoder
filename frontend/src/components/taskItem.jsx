@@ -22,7 +22,7 @@ const TaskItem = ({ task, setIsEditing }) => {
   const handleDelete = async () => {
     const token = localStorage.getItem("jwt");
     try {
-      await axios.delete(`http://localhost:5000/api/todos/${task._id}`, {
+      await axios.delete(`http://localhost:8080/api/todos/${task._id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       dispatch(deleteTask(task._id));
