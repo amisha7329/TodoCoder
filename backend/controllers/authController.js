@@ -27,7 +27,7 @@ exports.googleAuthCallback = (req, res, next) => {
       email: user.email,
       profilePic: user.profilePic,
     }));
-    res.redirect(`${BROWSER_BASE_URL}?token=${token}&user=${userString}`);
+    res.redirect(`${BROWSER_BASE_URL}/dashboard?token=${token}&user=${userString}`);
   })(req, res, next);
 };
 
