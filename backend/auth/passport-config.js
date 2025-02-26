@@ -5,6 +5,7 @@ const { Strategy: JwtStrategy, ExtractJwt } = require("passport-jwt");
 const User = require("../models/userModel");
 
 const JWT_KEY = process.env.JWT_KEY;
+const API_BASE_URL = process.env.API_BASE_URL;
 const google_id= process.env.GOOGLE_CLIENT_ID
 console.log("google_id",google_id)
 
@@ -14,7 +15,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:8080/api/auth/google/callback",
+      callbackURL: `${API_BASE_URL}/api/auth/google/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {

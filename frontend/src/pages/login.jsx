@@ -2,8 +2,9 @@ import { Button, Typography, Paper, Box } from "@mui/material";
 import { Google } from "@mui/icons-material";
 
 const Login = () => {
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:8080/api/auth/google";
+    window.location.href = `${API_BASE_URL}/api/auth/google`;
   };
 
   return (

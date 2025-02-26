@@ -16,14 +16,14 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const user = useSelector((state) => state.auth.user);
   const jwt = useSelector((state) => state.auth.jwt);
 
   const fetchTasks = async (token) => {
     try {
       setIsLoading(true);
-      const response = await axios.get("http://localhost:8080/api/todos", {
+      const response = await axios.get(`${API_BASE_URL}/api/todos`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       dispatch(setTasks(response.data));

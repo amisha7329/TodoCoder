@@ -1,5 +1,8 @@
+require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
+
+const BROWSER_BASE_URL = process.env.BROWSER_BASE_URL;
 
 const generateToken = (user) => {
   return jwt.sign({ id: user._id, email: user.email }, process.env.JWT_KEY, {
@@ -16,7 +19,7 @@ exports.googleAuth = passport.authenticate("google", {
 exports.googleAuthCallback = (req, res, next) => {
   passport.authenticate("google", { session: false }, (err, user) => {
     if (err) {
-      return res.redirect("http://localhost:5173/?error=true");
+      return res.redirect(`${BROWSER_BASE_URL}/?error=true`);
     }
     const token = generateToken(user);
     const userString = encodeURIComponent(JSON.stringify({
@@ -24,7 +27,7 @@ exports.googleAuthCallback = (req, res, next) => {
       email: user.email,
       profilePic: user.profilePic,
     }));
-    res.redirect(`http://localhost:5173/dashboard?token=${token}&user=${userString}`);
+    res.redirect(`${BROWSER_BASE_URL}?token=${token}&user=${userString}`);
   })(req, res, next);
 };
 

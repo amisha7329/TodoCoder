@@ -10,6 +10,8 @@ const TaskForm = ({ isEditing, setIsEditing }) => {
   const [taskData, setTaskData] = useState({ name: "", description: "" });
   const [errors, setErrors] = useState({ name: "", description: "" });
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  
   useEffect(() => {
     if (isEditing) {
       setTaskData({ name: isEditing.name, description: isEditing.description });
@@ -49,7 +51,7 @@ const TaskForm = ({ isEditing, setIsEditing }) => {
     try {
       if (isEditing) {
         const response = await axios.put(
-          `http://localhost:8080/api/todos/${isEditing._id}`,
+          `${API_BASE_URL}/api/todos/${isEditing._id}`,
           taskData,
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -57,7 +59,7 @@ const TaskForm = ({ isEditing, setIsEditing }) => {
         setIsEditing(null);
       } else {
         const response = await axios.post(
-          "http://localhost:8080/api/todos",
+          `${API_BASE_URL}/api/todos`,
           taskData,
           { headers: { Authorization: `Bearer ${token}` } }
         );

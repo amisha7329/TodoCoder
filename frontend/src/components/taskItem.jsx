@@ -14,6 +14,7 @@ import { deleteTask } from "../redux/taskSlice";
 
 const TaskItem = ({ task, setIsEditing }) => {
   const dispatch = useDispatch();
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const isSmallScreen = useMediaQuery("(max-width:600px)");
   const isMediumScreen = useMediaQuery("(max-width:900px)");
@@ -22,7 +23,7 @@ const TaskItem = ({ task, setIsEditing }) => {
   const handleDelete = async () => {
     const token = localStorage.getItem("jwt");
     try {
-      await axios.delete(`http://localhost:8080/api/todos/${task._id}`, {
+      await axios.delete(`${API_BASE_URL}/api/todos/${task._id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       dispatch(deleteTask(task._id));
