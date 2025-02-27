@@ -5,14 +5,13 @@ TodoCoder is a full-stack **MERN** (MongoDB, Express.js, React.js, Node.js) appl
 
 ## Tech Stack
 - **Frontend:** React.js (Vite), Redux Toolkit, Material-UI
-- **Backend:** Node.js, Express.js, MongoDB, Mongoose, JWT, Passport.js (Google OAuth), WebSockets
+- **Backend:** Node.js, Express.js, MongoDB, Mongoose, JWT, Passport.js (Google OAuth)
 - **State Management:** Redux Toolkit
 - **Database:** MongoDB Atlas (Cloud)
 - **Deployment:**
   - **Frontend:** Netlify  
   - **Backend:** Render  
-- **Authentication:** Google OAuth 2.0 + JWT  
-- **Real-time Updates:** WebSockets  
+- **Authentication:** Google OAuth 2.0 + JWT
 
 ---
 
