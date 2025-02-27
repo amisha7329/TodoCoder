@@ -33,7 +33,7 @@ const TaskItem = ({ task, setIsEditing }) => {
   };
 
   if (!task) return null;
-
+console.log("Task", task)
   return (
     <Card
       elevation={5}
@@ -88,7 +88,7 @@ const TaskItem = ({ task, setIsEditing }) => {
               ? "0.8rem"
               : isMediumScreen
               ? "0.9rem"
-              : "1rem", // ✅ Reduce description size
+              : "1rem",
             fontWeight: 600,
             color: "rgb(147, 147, 148)",
             textTransform: "capitalize",
@@ -96,6 +96,22 @@ const TaskItem = ({ task, setIsEditing }) => {
         >
           {task.description}
         </Typography>
+        <Typography
+    sx={{
+      fontFamily: "nunito, sans-serif",
+      fontSize: isSmallScreen
+        ? "0.5rem"
+        : isMediumScreen
+        ? "0.7rem"
+        : "0.9rem",
+      fontWeight: 700,
+      color: task.completed ? "#4CAF50" : "#FF5252",
+      textTransform: "capitalize",
+      mt: 1,
+    }}
+  >
+    Status: {task.completed ? "Completed" : "Incomplete"}
+  </Typography>
       </CardContent>
 
       <Box>

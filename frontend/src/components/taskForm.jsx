@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, TextField, Button, Typography, IconButton } from "@mui/material";
+import { Box, TextField, Button, Typography, IconButton, Switch, FormControlLabel } from "@mui/material";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { addTask, updateTask } from "../redux/taskSlice";
@@ -7,36 +7,41 @@ import AddIcon from "@mui/icons-material/Add";
 
 const TaskForm = ({ isEditing, setIsEditing }) => {
   const dispatch = useDispatch();
-  const [taskData, setTaskData] = useState({ name: "", description: "" });
+  const [taskData, setTaskData] = useState({ name: "", description: "", completed: false });
   const [errors, setErrors] = useState({ name: "", description: "" });
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-  
   useEffect(() => {
     if (isEditing) {
-      setTaskData({ name: isEditing.name, description: isEditing.description });
+      setTaskData({
+        name: isEditing.name,
+        description: isEditing.description,
+        completed: isEditing.completed, // ✅ Set completed status from existing task
+      });
       setErrors({ name: "", description: "" });
     } else {
-      setTaskData({ name: "", description: "" });
+      setTaskData({ name: "", description: "", completed: false }); // ✅ Default to Incomplete
     }
   }, [isEditing]);
 
   const handleChange = (e) => {
     setTaskData({ ...taskData, [e.target.name]: e.target.value });
-
     setErrors({ ...errors, [e.target.name]: "" });
   };
 
+  // ✅ Handle Toggle Switch Change
+  const handleToggleChange = () => {
+    setTaskData({ ...taskData, completed: !taskData.completed });
+  };
+
+  // ✅ Validate Form
   const validateForm = () => {
     let newErrors = {};
     if (!taskData.name.trim()) newErrors.name = "Task name is required!";
-    else if (taskData.name.trim().length < 3)
-      newErrors.name = "Must be at least 3 characters!";
+    else if (taskData.name.trim().length < 3) newErrors.name = "Must be at least 3 characters!";
 
-    if (!taskData.description.trim())
-      newErrors.description = "Description is required!";
-    else if (taskData.description.trim().length < 3)
-      newErrors.description = "Must be at least 3 characters!";
+    if (!taskData.description.trim()) newErrors.description = "Description is required!";
+    else if (taskData.description.trim().length < 3) newErrors.description = "Must be at least 3 characters!";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -65,13 +70,13 @@ const TaskForm = ({ isEditing, setIsEditing }) => {
         );
         dispatch(addTask(response.data));
       }
-      setTaskData({ name: "", description: "" });
+      setTaskData({ name: "", description: "", completed: false }); // ✅ Reset after submit
     } catch (error) {
       console.error("Error saving task:", error);
     }
   };
   const handleCancel = () => {
-    setTaskData({ name: "", description: "" });
+    setTaskData({ name: "", description: "", completed: false });
     setErrors({ name: "", description: "" });
     setIsEditing(null);
   };
@@ -124,16 +129,10 @@ const TaskForm = ({ isEditing, setIsEditing }) => {
           borderRadius: "6px",
           "& .MuiInputBase-input": { color: "white", fontSize: "20px" },
           "& .MuiInputLabel-root": { color: "white" },
-          "& .MuiInputLabel-root.Mui-focused": {
-            color: "white",
-            fontWeight: "bold",
-            fontSize: "20px",
-          },
+          "& .MuiInputLabel-root.Mui-focused": { color: "white", fontWeight: "bold", fontSize: "20px" },
           "& .MuiOutlinedInput-notchedOutline": { borderColor: "#ccc" },
           "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#999" },
-          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#666",
-          },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "#666" },
         }}
       />
 
@@ -150,16 +149,25 @@ const TaskForm = ({ isEditing, setIsEditing }) => {
           borderRadius: "6px",
           "& .MuiInputBase-input": { color: "white", fontSize: "20px" },
           "& .MuiInputLabel-root": { color: "white" },
-          "& .MuiInputLabel-root.Mui-focused": {
-            color: "white",
-            fontWeight: "bold",
-            fontSize: "20px",
-          },
+          "& .MuiInputLabel-root.Mui-focused": { color: "white", fontWeight: "bold", fontSize: "20px" },
           "& .MuiOutlinedInput-notchedOutline": { borderColor: "#ccc" },
           "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#999" },
-          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#666",
-          },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "#666" },
+        }}
+      />
+      <FormControlLabel
+        control={
+          <Switch
+            checked={taskData.completed}
+            onChange={handleToggleChange}
+            color="success"
+          />
+        }
+        label={taskData.completed ? "Mark as Completed" : "Mark as Incomplete"}
+        sx={{
+          color: "white",
+          fontFamily: "nunito, sans-serif",
+          fontSize: "1rem",
         }}
       />
 
@@ -197,15 +205,7 @@ const TaskForm = ({ isEditing, setIsEditing }) => {
           }}
           onClick={handleCancel}
         >
-          <Typography
-            sx={{
-              fontFamily: "Dangrek, sans-serif",
-              fontSize: "1.2rem",
-              letterSpacing: "1px",
-              color: "white",
-              textTransform: "capitalize",
-            }}
-          >
+          <Typography sx={{ fontFamily: "Dangrek, sans-serif", fontSize: "1.2rem", color: "white" }}>
             Cancel
           </Typography>
         </Button>
